@@ -49,7 +49,7 @@
             Suite suite = new Suite();
 
             Console.WriteLine("CADASTRO DE RESERVA\nCPF DO HÓSPEDE: ");
-            hospede.Cpf = long.Parse(Console.ReadLine());
+            hospede.Cpf = Console.ReadLine();
 
             Console.WriteLine("NÚMERO DO QUARTO: ");
             suite.NumeroQuarto = int.Parse(Console.ReadLine());

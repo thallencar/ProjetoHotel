@@ -1,27 +1,27 @@
-﻿namespace ProjetoHotel
+﻿using System.Text.RegularExpressions;
+
+namespace ProjetoHotel
 {
     public class Hospede
     {
-        public long Cpf{ get; set; }
-        public int Rg {  get; set; }
+        public string Cpf { get; set; }
+        public string Rg { get; set; }
         public string Nome { get; set; }
-        public string Sobrenome { get; set; }
-        public long Telefone { get; set; }
+        public string Telefone { get; set; }
         public string Email { get; set; }
-        public int Idade { get; set; }
+        public DateOnly DataNascimento { get; set; }
         public char Genero { get; set; }
         public string Logradouro { get; set; }
         public string Profissao { get; set; }
 
-        public Hospede(long cpf, int rg, string nome, string sobrenome, long telefone, string email, int idade, char genero, string logradouro, string profissao)
+        public Hospede(string cpf, string rg, string nome, string telefone, string email, DateOnly dataNascimento, char genero, string logradouro, string profissao)
         {
             Cpf = cpf;
             Rg = rg;
             Nome = nome;
-            Sobrenome = sobrenome;
             Telefone = telefone;
             Email = email;
-            Idade = idade;
+            DataNascimento = dataNascimento;
             Genero = genero;
             Logradouro = logradouro;
             Profissao = profissao;
@@ -29,64 +29,65 @@
 
         public Hospede()
         {
-            
+
         }
 
-        List<Hospede> hospedes = new List<Hospede>();
+        private readonly List<Hospede> hospedes = new List<Hospede>();
         public void CadastrarHospede()
         {
-            Console.WriteLine("CADASTRO DE HÓSPEDES\nCPF (Apenas números):");
-            Cpf = long.Parse(Console.ReadLine());
-            Console.WriteLine("RG (Apenas números): ");
-            Rg = int.Parse(Console.ReadLine()); ;
-            Console.WriteLine("NOME: ");
+            Console.WriteLine("CADASTRO DE HÓSPEDES");
+
+            ValidarDocumentos();
+
+            Console.Write("NOME COMPLETO: ");
             Nome = Console.ReadLine();
-            Console.WriteLine("SOBRENOME: ");
-            Sobrenome = Console.ReadLine();
-            Console.WriteLine("TELEFONE (Apenas números): ");
-            Telefone = long.Parse(Console.ReadLine());
-            Console.WriteLine("E-MAIL: ");
-            Email = Console.ReadLine();
-            Console.WriteLine("IDADE: ");
-            Idade = int.Parse(Console.ReadLine());
-            Console.WriteLine("GÊNERO (M/F): ");
-            Genero = char.Parse(Console.ReadLine().ToUpper());    
-            Console.WriteLine("LOGRADOURO: ");
+
+            Console.Write("TELEFONE: ");
+            Telefone = Console.ReadLine();
+
+            ValidarEmail();
+
+            Console.Write("DATA DE NASCIMENTO: ");
+            DataNascimento = DateOnly.Parse(Console.ReadLine());
+
+            Console.Write("GÊNERO (M/F): ");
+            Genero = char.Parse(Console.ReadLine().ToUpper());
+
+            Console.Write("LOGRADOURO: ");
             Logradouro = Console.ReadLine();
-            Console.WriteLine("PROFISSÃO: ");
+
+            Console.Write("PROFISSÃO: ");
             Profissao = Console.ReadLine();
+
             Console.WriteLine(" ");
 
-            Hospede novoHospede = new Hospede(Cpf, Rg, Nome, Sobrenome, Telefone, Email, Idade, Genero, Logradouro, Profissao);
+            Hospede novoHospede = new Hospede(Cpf, Rg, Nome, Telefone, Email, DataNascimento, Genero, Logradouro, Profissao);
             hospedes.Add(novoHospede);
         }
 
         public void HospedeConsultaIndividual()
         {
-            Console.WriteLine("Digite o CPF do hóspede (Apenas números): ");
-            long buscarCpf = long.Parse(Console.ReadLine());
+            Console.Write("Digite o CPF do hóspede: ");
+            string buscarCpf = Console.ReadLine();
 
             foreach (var hospede in hospedes)
             {
-                if (buscarCpf == hospede.Cpf) {
-                    Console.WriteLine(@$"DADOS DE SR(A) {hospede.Sobrenome.ToUpper()}, {hospede.Nome}:
+                if (buscarCpf == hospede.Cpf)
+                {
+                    Console.WriteLine(@$"DADOS DE SR(A) {hospede.ExibirSobrenome()}:
 CPF: {hospede.Cpf}
 RG: {hospede.Rg}
 TELEFONE: {hospede.Telefone}
 E-MAIL:{hospede.Email}
-IDADE: {hospede.Idade}
+DATA DE NASCIMENTO: {hospede.DataNascimento}
 GÊNERO: {hospede.Genero}
 LOGRADOURO: {hospede.Logradouro}
 PROFISSÃO: {hospede.Profissao}
 ");
                     Console.WriteLine(" ");
-                    return;
                 }
-                else
-                {
-                    Console.WriteLine("Cadastro não encontrado.");
-                }
-            }   
+                else Console.WriteLine("Cadastro não encontrado.");
+            }
 
         }
 
@@ -94,20 +95,74 @@ PROFISSÃO: {hospede.Profissao}
         {
             foreach (var hospede in hospedes)
             {
-                Console.WriteLine(@$"DADOS DE SR(A) {hospede.Sobrenome.ToUpper()}, {hospede.Nome}:
+                Console.Write(@$"DADOS DE SR(A) {hospede.ExibirSobrenome()}:
 CPF: {hospede.Cpf}
 RG: {hospede.Rg}
 TELEFONE: {hospede.Telefone}
 E-MAIL:{hospede.Email}
-IDADE: {hospede.Idade}
+DATA DE NASCIMENTO: {hospede.DataNascimento}
 GÊNERO: {hospede.Genero}
 LOGRADOURO: {hospede.Logradouro}
 PROFISSÃO: {hospede.Profissao}
 ");
-                Console.WriteLine(" ");
+                Console.WriteLine("");
+                Console.WriteLine("");
 
             }
         }
 
+        public bool ValidarDocumentos()
+        {
+            Console.Write("CPF: ");
+            Cpf = Console.ReadLine();
+
+            string cpfRegex = @"^(\d{3}\.\d{3}\.\d{3}-\d{2}|\d{11})$";
+            while (!Regex.IsMatch(Cpf, cpfRegex))
+            {
+                Console.WriteLine("O número do CPF deve conter 11 dígitos.");
+                Console.Write("CPF: ");
+                Cpf = Console.ReadLine();
+            }
+
+            Console.Write("RG: ");
+            Rg = Console.ReadLine();
+
+            string rgRegex = @"^(\d{2}\.\d{3}\.\d{3}[-]?[0-9Xx]|\d{9})$";
+
+            while (!Regex.IsMatch(Rg, rgRegex))
+            {
+                Console.WriteLine("O número do RG deve conter 9 dígitos.");
+                Console.Write("RG: ");
+                Rg = Console.ReadLine();
+            }
+
+            return true;
+        }
+
+        public bool ValidarEmail()
+        {
+            Console.Write("E-MAIL: ");
+            Email = Console.ReadLine();
+
+            string emailRegex = @"^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$";
+
+            while (!Regex.IsMatch(Email, emailRegex))
+            {
+                Console.WriteLine("Formato de email inválido. Tente novamente.");
+                Console.Write("E-MAIL: ");
+                Email = Console.ReadLine();
+            }
+            return true;
+        }
+
+        public string ExibirSobrenome()
+        {
+            string[] nomes = Nome.Split(' ');
+
+            string primeiroNome = nomes[0];
+            string ultimoNome = nomes[nomes.Length - 1];
+
+            return $"{ultimoNome.ToUpper()}, {primeiroNome}";
+        }
     }
 }

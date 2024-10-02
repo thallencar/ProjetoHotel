@@ -5,11 +5,8 @@
         static void Main(string[] args)
         {
             Hospede hospede = new Hospede();
-            List<Hospede> hospedes = new List<Hospede>();
             Suite suite = new Suite();
-            List<Suite> suites = new List<Suite>();
             Reserva reserva = new Reserva();
-            List<Reserva> reservas = new List<Reserva>();
 
             while (true)
             {
@@ -19,10 +16,12 @@
 3 - LISTAR
 
 0 - SAIR");
-                Console.WriteLine("Escolha uma opção: ");
+                Console.Write("\nEscolha uma opção: ");
                 int option = int.Parse(Console.ReadLine());
 
-                switch(option)
+                Console.Clear();
+
+                switch (option)
                 {
                     case 0:
                         Console.WriteLine("Programa finalizado.");
@@ -32,17 +31,23 @@
 1 - HOSPÉDE
 2 - SUÍTE
 3 - RESERVA");
+                        Console.Write("\nEscolha uma opção: ");
                         int opcaoCadastro = int.Parse(Console.ReadLine());
+                        Console.Clear();
+
                         switch (opcaoCadastro)
                         {
                             case 1:
                                 hospede.CadastrarHospede();
+                                Console.Clear();
                                 break;
                             case 2:
                                 suite.CadastrarSuite();
+                                Console.Clear();
                                 break;
                             case 3:
                                 reserva.CadastrarReserva();
+                                Console.Clear();
                                 break;
                             default:
                                 Console.WriteLine("Opção inválida!");
@@ -54,7 +59,10 @@
 1 - HOSPÉDE
 2 - SUÍTE
 3 - RESERVA");
+                        Console.Write("\nEscolha uma opção: ");
                         int opcaoConsulta = int.Parse(Console.ReadLine());
+                        Console.Clear();
+
                         switch (opcaoConsulta)
                         {
                             case 1:
@@ -76,7 +84,10 @@
 1 - HOSPÉDE
 2 - SUÍTE
 3 - RESERVA");
+                        Console.Write("\nEscolha uma opção: ");
                         int opcaoLista = int.Parse(Console.ReadLine());
+                        Console.Clear();
+
                         switch (opcaoLista)
                         {
                             case 1:
@@ -96,8 +107,6 @@
                 }
 
             }
-        Console.WriteLine("Pressione qualquer tecla para sair...");
-        string op = Console.ReadLine();
         }
     }
 }
