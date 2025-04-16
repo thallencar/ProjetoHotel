@@ -1,12 +1,14 @@
-﻿namespace ProjetoHotel
+﻿using ProjetoHotel.SistemaHotel;
+
+namespace ProjetoHotel
 {
     public class Program
     {
         static void Main(string[] args)
         {
-            Hospede hospede = new Hospede();
-            Suite suite = new Suite();
-            Reserva reserva = new Reserva();
+            HospedeGerenciador hospede = new();
+            SuiteGerenciador suite = new();
+            ReservaGerenciador reserva = new(hospede, suite);
 
             while (true)
             {
